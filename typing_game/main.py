@@ -7,19 +7,21 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 WIDTH = 800
 HEIGHT = 534
-TYPING_LIST = [K_a, K_b, K_c, K_d, K_e, K_f, K_g, K_h, K_i, K_j, K_k, K_l, K_m, K_n, K_o, K_p, K_q, K_r, K_s, K_t, K_u, K_v, K_v, K_w, K_x, K_y, K_z, K_COMMA, K_PERIOD]
-kakasi = pykakasi.kakasi()
+TYPING_LIST = [K_a, K_b, K_c, K_d, K_e, K_f, K_g, K_h, K_i, K_j, K_k, K_l, K_m, K_n, K_o, K_p, K_q, K_r, K_s, K_t, K_u, K_v, K_v, K_w, K_x, K_y, K_z, K_COMMA, K_PERIOD, K_MINUS, K_0, K_1, K_2, K_3, K_4, K_5, K_6, K_7, K_8, K_9]
+
 
 class Test():
+    
     # 生成・初期化
     def __init__(self):
+        kakasi = pykakasi.kakasi()
         # フォント設定
         self.tfont = pygame.font.Font('./fonts/ipaexg.ttf', 36)
         self.cfont = pygame.font.Font('./fonts/ipaexg.ttf', 80)
         # 変数初期化
-        self.text = "テスト"
+        self.text = "コーヒー"
         self.done_text = ""
-        self.ruby = kakasi.convert(self.text)[0]["hepburn"]
+        self.ruby = Test.convertHepburn(self.text)
         self.kana = [kakasi.convert(self.text[i])[0]["hepburn"] for i in range(len(self.text))]
         self.done_ruby = ""
         self.miss = 0 
@@ -59,6 +61,17 @@ class Test():
         else:
             self.miss += 1
 
+    # ローマ字変換関数
+    @staticmethod
+    def convertHepburn(text):
+        kakasi = pykakasi.kakasi()
+        converted = kakasi.convert(text)
+        print(converted)
+        ruby = ""
+        for i in range(len(converted)):
+            ruby += converted[i]["hepburn"]
+            print(ruby)
+        return ruby
 
 def main():
     # 初期化
@@ -83,11 +96,12 @@ def main():
         screen.blit(bg, bg_rect)
         test.disp(screen)   # 問題文字描写
         test.rubyDisp(screen)
+        # print(test.ruby)
         # クリア時処理
         if judge:
             test.clearDisp(screen)
             test.missDisp(screen)
-            # print(test.kana)
+            print(test.kana)
 
         screen.fill(BLACK, (WIDTH/2, 0, 1, 534))    # デバッグ用中央線
 
