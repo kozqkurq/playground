@@ -19,12 +19,14 @@ class Test():
         self.tfont = pygame.font.Font('./fonts/ipaexg.ttf', 36)
         self.cfont = pygame.font.Font('./fonts/ipaexg.ttf', 80)
         # 変数初期化
-        self.text = "コーヒー"
+        self.text = "私はコーヒーが大好きです"
         self.done_text = ""
         self.ruby = Test.convertHepburn(self.text)
         self.kana = [kakasi.convert(self.text[i])[0]["hepburn"] for i in range(len(self.text))]
         self.done_ruby = ""
         self.miss = 0 
+    
+        print(self.kana)
 
     # 表示用関数(問題)
     def disp(self, screen):
@@ -53,6 +55,7 @@ class Test():
 
     # 判定用関数
     def judge(self, key):
+        # タイプされたキーが正しい場合
         if pygame.key.name(key) == self.ruby[0]:
             self.done_ruby += self.ruby[0]
             self.ruby = re.sub(r'.', '', self.ruby, count = 1)
@@ -64,6 +67,7 @@ class Test():
     # ローマ字変換関数
     @staticmethod
     def convertHepburn(text):
+        # pykakasi初期化
         kakasi = pykakasi.kakasi()
         converted = kakasi.convert(text)
         print(converted)
@@ -101,7 +105,7 @@ def main():
         if judge:
             test.clearDisp(screen)
             test.missDisp(screen)
-            print(test.kana)
+            # print(test.kana)
 
         screen.fill(BLACK, (WIDTH/2, 0, 1, 534))    # デバッグ用中央線
 
