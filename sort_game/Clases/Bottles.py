@@ -1,18 +1,19 @@
-import Bottle
 import random
 class Bottles:
     def __init__(self, num) -> None:
+        # 生成元
         self.origin = []
         for i in range(1, num - 1):
             for j in range(4):
                 self.origin.append(i)
-        
+        # カラーボトル生成
         self.value = []
         for i in range(num-2):
             bottle = random.sample(self.origin, 4)
             self.value.append(bottle)
             for i in range(4):
                 self.origin.remove(bottle[i])
+        # 空ボトル生成
         self.value.append([0,0,0,0])
         self.value.append([0,0,0,0])
 
@@ -43,10 +44,3 @@ class Bottles:
                     empty_index -= 1
                 else:
                     break
-
-
-bottles = Bottles(5)
-print(bottles.value)
-
-bottles.move(0, 3)
-print(bottles.value)
