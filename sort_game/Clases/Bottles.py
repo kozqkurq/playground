@@ -44,3 +44,7 @@ class Bottles:
                     empty_index -= 1
                 else:
                     break
+    
+    def clear_check(self):
+        for i in range(len(self.value)):
+            
