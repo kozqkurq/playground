@@ -37,14 +37,38 @@ class CalcGui(object):
         calc_label.pack(anchor=tk.E)
         ans_label.pack(anchor=tk.E)
 
-        for i, row enumerate(BUTTON, 1):
+        for i, row in enumerate(BUTTON, 1):
             for j, num in enumerate(row):
                 button = tk.Button(button_frame, text=num, font=("", 15), width=6, height=3)
                 button.grid(row=i, column=j)
+                button.bind("<Button-1>", self.click_button)
+    
+    def click_button(self, event):
+        check = event.widget["text"]
+
+        if check == "=":
+            if self.formula[-1:] in SYMBOL:
+                self.formula = self.formula[:-1]
+
+            res = '= ' + str(eval(self.formula))
+            self.ans_var.set(res)
+        elif check == 'C':
+            self.formula = ''
+            self.ans_var.set('')
+        elif check in SYMBOL:
+            if self.formula[-1:] not in SYMBOL and self.formula[-1:] != '':
+                self.formula += check
+            elif self.formula[-1:] in SYMBOL:
+                self.formula = self.formula[:-1] + check
+        else: 
+            self.formula += check
+ 
+        self.calc_var.set(self.formula)
                 
 
 def main():
     app = tk.Tk()
+    app.resizable(width=False, height=False)
     CalcGui(app)
 
     app.mainloop()
