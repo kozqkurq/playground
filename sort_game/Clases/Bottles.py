@@ -16,6 +16,7 @@ class Bottles:
         # 空ボトル生成
         self.value.append([0,0,0,0])
         self.value.append([0,0,0,0])
+        
 
     
     def move(self, before, after):
@@ -46,5 +47,10 @@ class Bottles:
                     break
     
     def clear_check(self):
-        for i in range(len(self.value)):
-            
+        for bottle in self.value:
+            c_value = bottle[0]
+            for value in bottle:
+                if value != c_value:
+                    return False
+        
+        return True

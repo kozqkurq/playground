@@ -39,60 +39,65 @@ def main():
     btl_image_rects = []
 
     # ボトル生成
-    btl_num = 6
+    btl_num = 5
     bottles = Bottles(btl_num)
     print(bottles.value)
     
     while True:
         # スクリーン描写 
         screen.blit(bg, bg_rect)
+
+        # ボトル枠描写
         scr = pygame.Surface((650, 350), flags=pygame.SRCALPHA)
         scr.fill(GRAY)
         scr_rect = scr.get_rect(center=(WIDTH/2, HEIGHT/2))
         screen.blit(scr, scr_rect)
 
-        # 水ボトル描写
-        harf = btl_num / 2
-        x = harf * -100
-        for i in range(btl_num):
-            # 水描写
-            y = 0
-            for j in range(4):
-                water_rect_f = pygame.Rect(WIDTH/2-(44/2), HEIGHT/2-83, 44, 50)
-                water_scr = pygame.Surface((800, 440), flags=pygame.SRCALPHA)
-                water_scr.fill(COLORS[bottles.value[i][j]], water_rect_f.move(x,y))
-                water_scr_rect = water_scr.get_rect()
-                screen.blit(water_scr, water_scr_rect)
-                y += 50
-            # ボトル描写
-            if len(btl_image_rects) < btl_num:
-                btl_image_rects.append(btl_image_rect.move(x,0))
-            screen.blit(btl_image, btl_image_rects[i])
-            # 繰り返し処理
-            k = 50/(harf-0.5)
-            x += (k + 100)
+        # クリアチェック
+        if bottles.clear_check():
+            text_rend = font.render("CLERE", True, BLACK)
+            text_rect = text_rend.get_rect(center=(WIDTH/2, HEIGHT/2))
+            screen.blit(text_rend, text_rect)
+        else:
+            # 水ボトル描写
+            harf = btl_num / 2
+            x = harf * -100
+            for i in range(btl_num):
+                # 水描写
+                y = 0
+                for j in range(4):
+                    water_rect_f = pygame.Rect(WIDTH/2-(44/2), HEIGHT/2-83, 44, 50)
+                    water_scr = pygame.Surface((800, 440), flags=pygame.SRCALPHA)
+                    water_scr.fill(COLORS[bottles.value[i][j]], water_rect_f.move(x,y))
+                    water_scr_rect = water_scr.get_rect()
+                    screen.blit(water_scr, water_scr_rect)
+                    y += 50
+                # ボトル描写
+                if len(btl_image_rects) < btl_num:
+                    btl_image_rects.append(btl_image_rect.move(x,0))
+                screen.blit(btl_image, btl_image_rects[i])
+                # 繰り返し処理
+                k = 50/(harf-0.5)
+                x += (k + 100)
 
         # デバッグ用中央線
         # screen.fill(BLACK, (WIDTH/2, 0, 1, HEIGHT))
-
 
         # スクリーン更新
         pygame.time.wait(30)
         pygame.display.update()
 
-        
-
         # イベント受け取り
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    x,y = event.pos
                     for i in range(btl_num):
                         if (btl_image_rects[i].left+25 <= x <= btl_image_rects[i].left+75) and (95 <= y <= 345):
                             if selected_now and before != i:
                                 after = i
                                 bottles.move(before, after)
                                 selected_now = False
+                                print(bottles.value)
                             else:
                                 before = i
                                 selected_now = True
