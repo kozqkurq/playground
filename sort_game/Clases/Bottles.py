@@ -36,7 +36,7 @@ class Bottles:
             # 水の移動(条件：最大4回まで)
             while take_index < 4:
                 # ボトルが空か同じ色の時だけ
-                if empty_index == 3 or self.value[after][empty_index+1] == self.value[before][take_index]:
+                if (empty_index == 3 or self.value[after][empty_index+1] == self.value[before][take_index]) and empty_index >= 0:
                     # 移動
                     self.value[after][empty_index] = self.value[before][take_index]
                     self.value[before][take_index] = 0
@@ -54,3 +54,4 @@ class Bottles:
                     return False
         
         return True
+    
