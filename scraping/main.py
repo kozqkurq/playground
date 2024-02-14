@@ -1,16 +1,23 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import chromedriver_binary
+from selenium.webdriver.support.ui import Select
+import time
 
 option = Options()
 option.add_argument('--headless')
 
+
 driver = webdriver.Chrome(options=option)
-driver.get('https://www.google.co.jp/')
-html = driver.page_source
+driver.get('https://www.oca.ac.jp/course/')
+time.sleep(0.5)
+
+
+html = driver.page_source.encode("utf-8")
 soup = BeautifulSoup(html, 'html.parser')
 
-ll = [x for x in soup.text.split(' ') if len(x) > 0]
-for elem in ll:
-    print(elem)
+item = soup.find("div", class_="p-course_list -c2024").text
+print(item)
+
+driver.close()
+driver.quit()
